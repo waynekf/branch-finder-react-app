@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/features/postcode/Search.tsx"
+    "src/app/ui/features/postcode/Search.tsx"
   ],
   "exclude": ["node_modules"]
 }

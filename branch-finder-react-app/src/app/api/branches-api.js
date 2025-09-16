@@ -1,12 +1,12 @@
 function getBranches() {
-  console.log("qwerty");
+  console.log('qwerty');
   const url = `https://branch-finder-api.onrender.com/api/branches`;
   return fetch(url)
     .then((res) => {
       if (res.status === 404) {
         return Promise.reject({
           status: res.status,
-          msg: "No branches found",
+          msg: 'No branches found',
         });
       }
       const json = res.json();
@@ -17,7 +17,7 @@ function getBranches() {
       if (branches.length === 0) {
         return Promise.reject({
           status: res.status,
-          msg: "No branches found",
+          msg: 'No branches found',
         });
       }
 

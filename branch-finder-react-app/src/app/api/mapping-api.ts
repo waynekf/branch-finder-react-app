@@ -1,5 +1,5 @@
-import { PostcodeResponse } from "../types/PostcodeResponse";
-import { CustomError } from "../features/error/CustomError";
+import { PostcodeResponse } from '../types/PostcodeResponse';
+import { CustomError } from '../ui/features/error/CustomError';
 
 function getPostcode(postcode: string) {
   const url = `https://api.postcodes.io/postcodes/${postcode}`;
@@ -8,7 +8,7 @@ function getPostcode(postcode: string) {
       if (res.status === 404) {
         return Promise.reject({
           status: res.status,
-          msg: "Failed to match postcode",
+          msg: 'Failed to match postcode',
         } as CustomError);
       }
       return res.json();

@@ -1,4 +1,4 @@
-import * as z from "zod";
+import * as z from 'zod';
 
 export const PostcodeResponseSchema = z.object({
   postcode: z.string(),
@@ -6,9 +6,9 @@ export const PostcodeResponseSchema = z.object({
   eastings: z.number(),
   northings: z.number(),
   country: z.string(),
-  nhs_ha: "South Central",
-  longitude: -0.638025,
-  latitude: 51.391925,
+  nhs_ha: z.string(),
+  longitude: z.number().min(-180).max(180),
+  latitude: z.number().min(-90).max(90),
   european_electoral_region: z.string(),
   primary_care_trust: z.string(),
   region: z.string(),
