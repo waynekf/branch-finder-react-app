@@ -1,11 +1,5 @@
 function Header() {
-  return (
-    <>
-      <header role="banner">
-        header
-      </header>
-    </>
-  );
+  return <header className="container"></header>;
 }
 
 export default Header;

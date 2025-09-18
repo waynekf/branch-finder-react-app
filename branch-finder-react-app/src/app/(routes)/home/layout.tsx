@@ -3,5 +3,5 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div>sub-layout{children}</div>;
+  return <div>{children}</div>;
 }

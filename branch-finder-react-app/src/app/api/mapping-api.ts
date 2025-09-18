@@ -1,4 +1,4 @@
-import { PostcodeResponse } from '../types/PostcodeResponse';
+import { PostcodeResponse } from '../schema/postcode/PostcodeResponse';
 import { CustomError } from '../ui/features/error/CustomError';
 
 function getPostcode(postcode: string) {

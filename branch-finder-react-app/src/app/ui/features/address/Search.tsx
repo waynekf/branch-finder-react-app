@@ -1,16 +1,20 @@
 'use client';
 
-import { ChangeEvent, useEffect, useState } from 'react';
 import getPostcode from '@/app/api/mapping-api';
-import { PostcodeResponse } from '@/app/types/PostcodeResponse';
-import Postcode from './Postcode';
-import ErrorSummary from '../error/ErrorSummary';
+import { PostcodeResponse } from '@/app/schema/postcode/PostcodeResponse';
+import { ChangeEvent, useEffect, useState } from 'react';
+import logger from '../../../../logger';
 import { CustomError } from '../error/CustomError';
-import logger from "../../../../logger";
+import ErrorSummary from '../error/ErrorSummary';
+import Coordinates from './Coordinates';
+import Postcode from './Postcode';
 import './Search.scss';
+import MapContainer from '../map/MapContainer';
 
 function Search() {
-  const [search, setSearch] = useState('SL59SJ');
+  const [search, setSearch] = useState(
+    process.env.NEXT_PUBLIC_REACT_APP_DEFAULT_POSTCODE as string,
+  );
   const [postcode, setPostcode] = useState({} as PostcodeResponse);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState({} as CustomError);
@@ -56,7 +60,7 @@ function Search() {
     setSearch(event.target.value);
   }
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+  function handleKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
     setSearch(search.toUpperCase());
   }
 
@@ -70,13 +74,15 @@ function Search() {
           value={search}
           type="text"
           onChange={handleChange}
-          onKeyDown={handleKeyDown}
+          onKeyUp={handleKeyUp}
         ></input>
         <button>submit</button>
         <button onClick={handleClear}>clear</button>
       </form>
       <ErrorSummary customError={error} />
       <Postcode selected={postcode} />
+      <Coordinates postcode={postcode} />
+      <MapContainer postcode={postcode} />
     </>
   );
 }

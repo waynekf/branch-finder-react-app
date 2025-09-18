@@ -1,3 +1,4 @@
+import background from './grid.jpg';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 
@@ -9,15 +10,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-        </link>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+        ></link>
+        <link
+          href="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.css"
+          rel="stylesheet"
+        />
+        <script src="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js"></script>
       </head>
-      <body>
-        original layout
+      <body
+        style={{
+          backgroundImage: `url(/img/grid.jpg)`, opacity: 0.95
+        }}
+      >
         <Header></Header>
-        <main>
-          {children}
-        </main>
+        <main className="container">{children}</main>
         <Footer></Footer>
       </body>
     </html>
