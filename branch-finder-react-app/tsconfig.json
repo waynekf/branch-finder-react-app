@@ -28,7 +28,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/app/ui/features/address/Search.tsx",
-    "src/app/ui/features/map/MapContainer.jsx"
+    "src/app/ui/features/map/MapContainer.tsx"
   ],
   "exclude": ["node_modules"]
 }

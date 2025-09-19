@@ -1,4 +1,3 @@
-import background from './grid.jpg';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 
@@ -22,7 +21,9 @@ export default function RootLayout({
       </head>
       <body
         style={{
-          backgroundImage: `url(/img/grid.jpg)`, opacity: 0.95
+          backgroundImage: `url(/img/grid.png)`,
+          opacity: 0.95,
+          backgroundRepeat: 'repeat',
         }}
       >
         <Header></Header>
