@@ -2,7 +2,8 @@ import { PostcodeResponse } from '../schema/postcode/PostcodeResponse';
 import { CustomError } from '../ui/features/error/CustomError';
 
 function getPostcode(postcode: string) {
-  const url = `https://api.postcodes.io/postcodes/${postcode}`;
+  const baseUrl = process.env.NEXT_PUBLIC_REACT_APP_POSTCODE_BASE_URL as string;
+  const url = baseUrl + `/${postcode}`;
   return fetch(url)
     .then((res) => {
       if (res.status === 404) {

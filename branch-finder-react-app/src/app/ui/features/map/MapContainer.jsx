@@ -15,9 +15,8 @@ function MapContainer({ homePostcode, myfeatures }) {
       homePostcode?.longitude !== undefined
     ) {
       mapboxgl.accessToken = process.env.NEXT_PUBLIC_REACT_APP_MAPBOX_API_KEY;
-      
-      console.log("=>");
-      console.log(homePostcode, "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+
+      console.log(myfeatures, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
 
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
@@ -30,6 +29,9 @@ function MapContainer({ homePostcode, myfeatures }) {
         // code from step 7-1 will go here
         const el = document.createElement('div');
         el.className = 'home-marker';
+
+        console.log(feature.geometry.coordinates, "----------------");
+        
         
         // make a marker for each feature and add to the map
         new mapboxgl.Marker(el)

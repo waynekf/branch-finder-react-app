@@ -11,7 +11,7 @@ import Postcode from '../address/Postcode';
 import MapContainer from '../map/MapContainer';
 import EmptyMapContainer from '../map/EmptyMapContainer';
 import './Home.style.scss';
-import { Features } from '../map/Features';
+import { FeatureCollection } from '../../../schema/featureCollection/FeatureCollection';
 
 function Home() {
   const [search, setSearch] = useState(
@@ -20,13 +20,33 @@ function Home() {
   const [homePostcode, setHomePostcode] = useState({} as PostcodeResponse);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState({} as CustomError);
-  const [features, setFeatures] = useState({} as Features);
+  const [features, setFeatures] = useState({} as FeatureCollection);
 
   useEffect(() => {
     logger.info('calling postcode api...');
     getPostcode(search)
       .then((data) => {
-        console.log(data.latitude + " " + data.longitude, "XXXXXXXXXXXXXXXX");
+        
+        const myfeatures: FeatureCollection = {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [data?.longitude, data?.latitude],
+              },
+              properties: {
+                title: 'Home',
+                description: 'Where I live',
+                address: "xxxxxxxxxxxxxxxxxxxxxxxx",
+                postcode: "SL59TG",
+              },
+            },
+          ],
+        };
+        setFeatures(myfeatures);
+
         return setHomePostcode(data);
       })
       .catch((error) => {
@@ -36,24 +56,6 @@ function Home() {
         }
       })
       .finally(() => {
-        const myfeatures: Features = {
-          type: 'FeatureCollection',
-          features: [
-            {
-              type: 'Feature',
-              geometry: {
-                type: 'Point',
-                coordinates: [-0.65196, 51.3983],
-              },
-              properties: {
-                title: 'Home',
-                description: 'Where I live',
-              },
-            },
-          ],
-        };
-        setFeatures(myfeatures);
-        
         setSubmitted(false);
       });
   }, [submitted]);
@@ -87,26 +89,28 @@ function Home() {
   }
 
   return (
-      <div>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="postcode">Postcode:</label>
-          <input
-            id="postcode"
-            name="postcode"
-            value={search}
-            type="text"
-            onChange={handleChange}
-            onKeyUp={handleKeyUp}
-          ></input>
-          <button>submit</button>
-          <button onClick={handleClear}>clear</button>
-        </form>
-        {!error.msg && <MapContainer homePostcode={homePostcode} myfeatures={features} />}
-        {error.msg && <EmptyMapContainer error={error} />}
-        {error && <ErrorSummary customError={error} />}
-        <Postcode selected={homePostcode} />
-        <Coordinates postcode={homePostcode} />
-      </div>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="postcode">Postcode:</label>
+        <input
+          id="postcode"
+          name="postcode"
+          value={search}
+          type="text"
+          onChange={handleChange}
+          onKeyUp={handleKeyUp}
+        ></input>
+        <button>submit</button>
+        <button onClick={handleClear}>clear</button>
+      </form>
+      {!error.msg && (
+        <MapContainer homePostcode={homePostcode} myfeatures={features} />
+      )}
+      {error.msg && <EmptyMapContainer error={error} />}
+      {error && <ErrorSummary customError={error} />}
+      <Postcode selected={homePostcode} />
+      <Coordinates postcode={homePostcode} />
+    </div>
   );
 }
 
