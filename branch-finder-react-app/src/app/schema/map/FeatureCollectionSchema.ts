@@ -10,10 +10,15 @@ export const FeatureCollectionSchema = z.object({
         coordinates: z.array(z.number().min(-180).max(180)),
       }),
       properties: z.object({
-        title: z.literal(["Home", "Branch"]),
+        title: z.literal(['Home', 'Branch']),
         description: z.string().nonempty(),
-        address: z.string(),
-        postcode: z.string()
+        address: z.object({
+          addressLine1: z.string(),
+          addressLine2: z.string(),
+          town: z.string(),
+          county: z.string(),
+          postcode: z.string(),
+        }),
       }),
     }),
   ),
