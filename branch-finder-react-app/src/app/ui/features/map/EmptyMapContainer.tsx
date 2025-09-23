@@ -5,10 +5,10 @@ import ErrorSummary from '../error/ErrorSummary';
 
 import './MapContainer.style.scss';
 
-function EmptyMapContainer(props: { error: CustomError }) {
+function EmptyMapContainer(props: { customError: CustomError }) {
   return (
     <div id="map-container" className="map-container">
-      <ErrorSummary customError={props.error} />
+      <ErrorSummary customError={props.customError} />
     </div>
   );
 }
