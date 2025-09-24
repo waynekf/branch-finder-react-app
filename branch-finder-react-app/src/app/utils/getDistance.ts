@@ -9,7 +9,7 @@ const getDistance = (position1: Position, position2: Position): number => {
   const m = Math.pow(Math.pow(a, 2) + Math.pow(b, 2), 0.5);
   const kms = m / 1000;
 
-  return Math.floor(kms);
+  return Math.round(kms * 100) / 100;
 };
 
 export type { Position };

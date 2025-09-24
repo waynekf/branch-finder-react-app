@@ -12,6 +12,7 @@
 .branch-marker {
   background-color: transparent !important;
   border-color: ghostwhite !important;
+  color: black;
   border-width: 5px !important;
   background-size: cover;
   width: 50px;
@@ -33,6 +34,8 @@
 }
 
 .mapboxgl-popup-content {
-  text-align: center;
+  text-align: left;
   font-family: 'Open Sans', sans-serif;
+  width: 500px;
+  height: 500px;
 }

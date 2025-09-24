@@ -7,19 +7,15 @@ import { FeatureCollection } from '../../../schema/map/FeatureCollection';
 import { Feature } from '@/app/schema/map';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './MapContainer.style.scss';
-import { Position, getDistance } from '@/app/utils/getDistance';
 import AddressCard from '../address/AddressCard';
+import { getMapPoints } from '@/app/utils/conversions';
 
 function MapContainer(props: { mapPoints: FeatureCollection }) {
   const mapRef = useRef({});
   const mapContainerRef = useRef({});
 
-  const home: Feature = (props.mapPoints.features || []).find(
-    (feature) => feature.properties.title === 'Home',
-  ) as Feature;
-  const branches: Feature[] = (props.mapPoints.features || []).filter(
-    (feature) => feature.properties.title === 'Branch',
-  ) as Feature[];
+  const home: Feature = getMapPoints(props.mapPoints.features, 'Home')[0];
+  const branches: Feature[] = getMapPoints(props.mapPoints.features, 'Branch');
 
   useEffect(() => {
     const lat: number = home?.geometry.coordinates[0] ?? 0;
@@ -34,7 +30,7 @@ function MapContainer(props: { mapPoints: FeatureCollection }) {
       zoom: 10.12,
     } as MapOptions);
 
-    const popupOtions: PopupOptions = {
+    const popupOptions: PopupOptions = {
       offset: 25,
       closeButton: false,
       closeOnClick: true,
@@ -45,7 +41,7 @@ function MapContainer(props: { mapPoints: FeatureCollection }) {
     new mapboxgl.Marker(homeMarker)
       .setLngLat([lat, lng])
       .setPopup(
-        new mapboxgl.Popup(popupOtions).setHTML(
+        new mapboxgl.Popup(popupOptions).setHTML(
           `<p>${home?.properties.title}</p><p>${home?.properties.description}</p>`,
         ),
       )
@@ -53,9 +49,20 @@ function MapContainer(props: { mapPoints: FeatureCollection }) {
 
     for (const feature of branches || []) {
       const branchMarker = document.createElement('div');
-      const root = createRoot(branchMarker);
-      
-      root.render(<AddressCard town={feature.properties.address.town} />);
+
+      const branchPopup = document.createElement('div');
+      const root = createRoot(branchPopup);
+
+      root.render(
+        <AddressCard
+          feature={feature}
+          branch={feature.properties.description}
+          address={feature.properties.address}
+          homeCoordinates={home.properties.coordinates2}
+          branchCoordinates={feature.properties.coordinates2}
+          distance={feature.properties.distance}
+        />,
+      );
       branchMarker.className = 'branch-marker';
 
       new mapboxgl.Marker(branchMarker)
@@ -63,7 +70,7 @@ function MapContainer(props: { mapPoints: FeatureCollection }) {
           feature.geometry.coordinates[0],
           feature.geometry.coordinates[1],
         ])
-        .setPopup(new mapboxgl.Popup(popupOtions).setDOMContent(branchMarker))
+        .setPopup(new mapboxgl.Popup(popupOptions).setDOMContent(branchPopup))
         .addTo(map);
     }
 
@@ -79,9 +86,7 @@ function MapContainer(props: { mapPoints: FeatureCollection }) {
   }, [props.mapPoints]);
 
   return (
-    <>
-      <div id="map-container" className="map-container" ref={mapContainerRef} />
-    </>
+    <div id="map-container" className="map-container" ref={mapContainerRef} />
   );
 }
 

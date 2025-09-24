@@ -6,7 +6,12 @@ function getPostcode(postcode: string) {
   const url = baseUrl + `/${postcode}`;
   return fetch(url)
     .then((res) => {
-      if (res.status === 404) {
+      if (!res.ok) {
+        throw {
+          status: res.status,
+          msg: 'unexpected error',
+        } as CustomError;
+      } else if (res.status === 404) {
         return Promise.reject({
           status: res.status,
           msg: 'Failed to match postcode',

@@ -11,7 +11,7 @@ const fromBranchToFeature = (branch: Branch): Feature => {
     },
     properties: {
       title: 'Branch',
-      description: `${branch.name} Branch`,
+      description: `${branch.name}`,
       address: {
         addressLine1: branch.address.addressLine1,
         addressLine2: branch.address.addressLine2,
@@ -19,6 +19,8 @@ const fromBranchToFeature = (branch: Branch): Feature => {
         county: branch.address.county,
         postcode: branch.address.postcode,
       },
+      coordinates2: [branch.coordinates.eastings, branch.coordinates.northings],
+      distance: 0,
     },
   } as Feature;
 };
@@ -40,8 +42,18 @@ const fromPostcodeResponseToFeature = (postcode: PostcodeResponse): Feature => {
         county: postcode.admin_county,
         postcode: postcode.postcode,
       },
+      coordinates2: [postcode.eastings, postcode.northings],
     },
   } as Feature;
 };
 
-export { fromBranchToFeature, fromPostcodeResponseToFeature };
+const getMapPoints = (
+  features: Feature[],
+  type: 'Home' | 'Branch',
+): Feature[] => {
+  return (features || []).filter(
+    (feature) => feature.properties.title === type,
+  ) as Feature[];
+};
+
+export { fromBranchToFeature, fromPostcodeResponseToFeature, getMapPoints };
