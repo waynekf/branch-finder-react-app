@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, RefObject } from 'react';
 import { createRoot } from 'react-dom/client';
 import mapboxgl, { MapOptions, PopupOptions } from 'mapbox-gl';
 import { FeatureCollection } from '../../../schema/map/FeatureCollection';
@@ -11,8 +11,8 @@ import AddressCard from '../address/AddressCard';
 import { getMapPoints } from '@/app/utils/conversions';
 
 function MapContainer(props: { mapPoints: FeatureCollection }) {
-  const mapRef = useRef({});
-  const mapContainerRef = useRef({});
+  const mapRef: RefObject<FeatureCollection> = useRef({} as FeatureCollection);
+  const mapContainerRef = useRef<HTMLDivElement>({} as HTMLDivElement);
 
   const home: Feature = getMapPoints(props.mapPoints.features, 'Home')[0];
   const branches: Feature[] = getMapPoints(props.mapPoints.features, 'Branch');
@@ -74,12 +74,12 @@ function MapContainer(props: { mapPoints: FeatureCollection }) {
         .addTo(map);
     }
 
-    mapRef.current = map;
+    //mapRef.current = map;
 
     return () => {
       try {
         if (mapRef.current) {
-          mapRef.current.remove();
+          //mapRef.current.remove();
         }
       } catch {}
     };

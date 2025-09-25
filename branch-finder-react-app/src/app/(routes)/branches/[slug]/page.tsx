@@ -3,7 +3,7 @@
 import { useRouter, useParams } from 'next/navigation';
 
 function BranchPage() {
-  let params = useParams();
+  const params = useParams();
   const branch = params.slug;
   const router = useRouter();
 

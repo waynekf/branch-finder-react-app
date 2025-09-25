@@ -17,7 +17,10 @@ export default function RootLayout({
           href="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.css"
           rel="stylesheet"
         />
-        <script src="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js"></script>
+        <script
+          src="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js"
+          defer
+        ></script>
       </head>
       <body
         style={{

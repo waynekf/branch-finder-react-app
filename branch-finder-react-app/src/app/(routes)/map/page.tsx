@@ -1,7 +1,5 @@
-import Map from '@/app/ui/features/map/MapContainer';
-
 function MapPage() {
-  return <Map />;
+  return <div>Map Page</div>;
 }
 
 export default MapPage;
