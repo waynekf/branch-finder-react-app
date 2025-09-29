@@ -18,8 +18,8 @@ function MapContainer(props: { mapPoints: FeatureCollection }) {
   const branches: Feature[] = getMapPoints(props.mapPoints.features, 'Branch');
 
   useEffect(() => {
-    const lat: number = home?.geometry.coordinates[0] ?? 0;
-    const lng: number = home?.geometry.coordinates[1] ?? 0;
+    const lat: number = home?.geometry.coordinates[0] ?? 53.95772;
+    const lng: number = home?.geometry.coordinates[1] ?? -2.025738;
 
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_REACT_APP_MAPBOX_API_KEY;
 
@@ -74,19 +74,21 @@ function MapContainer(props: { mapPoints: FeatureCollection }) {
         .addTo(map);
     }
 
-    //mapRef.current = map;
-
     return () => {
       try {
         if (mapRef.current) {
-          //mapRef.current.remove();
         }
       } catch {}
     };
   }, [props.mapPoints]);
 
   return (
-    <div id="map-container" className="map-container" ref={mapContainerRef} />
+    <div
+      id="map-container"
+      className="map-container"
+      aria-busy="true"
+      ref={mapContainerRef}
+    />
   );
 }
 

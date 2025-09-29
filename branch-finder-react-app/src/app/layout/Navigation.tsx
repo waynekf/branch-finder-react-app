@@ -12,10 +12,6 @@ function Navigation() {
         <small>About</small>
       </Link>
       |
-      <Link href="/map">
-        <small>Map</small>
-      </Link>
-      |
     </>
   );
 }

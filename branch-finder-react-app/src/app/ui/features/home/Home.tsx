@@ -6,9 +6,9 @@ import logger from '../../../../logger';
 import { CustomError } from '../error/CustomError';
 import ErrorSummary from '../error/ErrorSummary';
 import MapContainer from '../map/MapContainer';
-import EmptyMapContainer from '../map/EmptyMapContainer';
 import { FeatureCollection } from '../../../schema/map/FeatureCollection';
 import getBranches from '@/app/data/branches';
+import wait from '@/app/utils/wait';
 import {
   fromBranchToFeature,
   fromPostcodeResponseToFeature,
@@ -21,14 +21,46 @@ function Home() {
   const [search, setSearch] = useState(
     process.env.NEXT_PUBLIC_REACT_APP_DEFAULT_POSTCODE as string,
   );
+  const [currentState, setCurrentState] = useState(
+    'SearchPostcode' as 'SearchPostcode' | 'ShowMap',
+  );
+  const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState({} as CustomError);
   const [mapPoints, setMapPoints] = useState({} as FeatureCollection);
 
+  const initialMapPoints: FeatureCollection = {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [-2.025738, 53.95772],
+        },
+        properties: {
+          title: 'Home',
+          description: 'BD23 1DN',
+          address: {
+            addressLine1: '',
+            addressLine2: '',
+            town: 'Skipton West & West Craven',
+            county: 'North Yorkshire',
+            postcode: 'BD23 1DN',
+          },
+          coordinates2: [398409, 451291],
+          distance: 0,
+        },
+      },
+    ],
+  };
+  
   useEffect(() => {
+    setIsLoading(true);
     logger.info('calling postcode api...');
     getPostcode(search)
       .then((postcode) => {
+        wait(500);
         const mapPoints: FeatureCollection = {
           type: 'FeatureCollection',
           features: [
@@ -50,27 +82,42 @@ function Home() {
           );
           point.properties.distance = distance;
         }
-
         return setMapPoints(mapPoints);
       })
       .catch((error) => {
         if (error.status === 404) {
           setError(error);
-          setMapPoints({} as FeatureCollection);
+          setMapPoints(initialMapPoints);
         }
       })
       .finally(() => {
         setSubmitted(false);
+        setIsLoading(false);
       });
   }, [submitted]);
+
+  function openDialog(event: React.FormEvent) {
+    if (search !== '') {
+      setCurrentState('SearchPostcode');
+      event.preventDefault();
+    }
+  }
+
+  function closeDialog(event: React.FormEvent) {
+    setCurrentState('ShowMap');
+    event.preventDefault();
+  }
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (search === '') {
       setError({ status: 404, msg: 'Password is mandatory' } as CustomError);
+
+      return;
     } else {
       setError({} as CustomError);
     }
+    setCurrentState("ShowMap");
     setSubmitted(true);
   }
 
@@ -79,7 +126,7 @@ function Home() {
     setSubmitted(false);
     setSearch('');
     setError({} as CustomError);
-    setMapPoints({} as FeatureCollection);
+    setMapPoints(initialMapPoints);
     logger.info('cleared form');
   }
 
@@ -92,23 +139,52 @@ function Home() {
     setSearch(search.toUpperCase());
   }
 
+  const searchPostcodeDialog = (
+    <dialog open>
+      <article>
+        <header>
+          <button aria-label="Close" rel="prev" onClick={closeDialog}></button>
+          <p>
+            <strong>Search Postcode</strong>
+          </p>
+        </header>
+        <p>Enter your home postcode to search for your local branch:</p>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="postcode">Postcode:</label>
+          <input
+            id="postcode"
+            name="postcode"
+            value={search}
+            type="text"
+            onChange={handleChange}
+            onKeyUp={handleKeyUp}
+          ></input>
+          <button className="primary">submit</button>
+          <button className="secondary" onClick={handleClear}>
+            clear
+          </button>
+          {error && <ErrorSummary customError={error} />}
+        </form>
+      </article>
+    </dialog>
+  );
+
+  const defaultMapPoints: FeatureCollection = {
+    type: 'FeatureCollection',
+    features: mapPoints.features?.filter(
+      (point) => point.properties.title === 'Home',
+    ),
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="postcode">Postcode:</label>
-      <input
-        id="postcode"
-        name="postcode"
-        value={search}
-        type="text"
-        onChange={handleChange}
-        onKeyUp={handleKeyUp}
-      ></input>
-      <button>submit</button>
-      <button onClick={handleClear}>clear</button>
-      {!error.msg && <MapContainer mapPoints={mapPoints} />}
-      {error.msg && <EmptyMapContainer customError={error} />}
-      {error && <ErrorSummary customError={error} />}
-    </form>
+    <section>
+      <a href="/" onClick={openDialog}>
+        search for another postcode...
+      </a>
+      {currentState === 'SearchPostcode' && searchPostcodeDialog}
+      {isLoading && <p>loading...</p>}
+      <MapContainer mapPoints={isLoading ? defaultMapPoints : mapPoints} />
+    </section>
   );
 }
 

@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  distDir: 'build',
+  distDir: "build",
+  reactStrictMode: true,
   async redirects() {
     return [
       {
