@@ -135,7 +135,7 @@ function Home() {
     setSearch(event.target.value);
   }
 
-  function handleKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
+  function handleKeyUp() {
     setSearch(search.toUpperCase());
   }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, RefObject } from 'react';
+import { useRef, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import mapboxgl, { MapOptions, PopupOptions } from 'mapbox-gl';
 import { FeatureCollection, Feature } from 'branch-finder-schemas';
@@ -10,7 +10,6 @@ import AddressCard from '../address/AddressCard';
 import { getMapPoints } from 'branch-finder-utils';
 
 function MapContainer(props: { mapPoints: FeatureCollection }) {
-  const mapRef: RefObject<FeatureCollection> = useRef({} as FeatureCollection);
   const mapContainerRef = useRef<HTMLDivElement>({} as HTMLDivElement);
 
   const home: Feature = getMapPoints(props.mapPoints.features, 'Home')[0];
@@ -73,12 +72,7 @@ function MapContainer(props: { mapPoints: FeatureCollection }) {
         .addTo(map);
     }
 
-    return () => {
-      try {
-        if (mapRef.current) {
-        }
-      } catch {}
-    };
+    //return () => { };
   }, [props.mapPoints]);
 
   return (
