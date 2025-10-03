@@ -1,0 +1,19 @@
+{
+  "name": "branch-finder-schemas",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/branch-finder-schemas/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/branch-finder-schemas",
+        "main": "libs/branch-finder-schemas/src/index.ts",
+        "tsConfig": "libs/branch-finder-schemas/tsconfig.lib.json",
+        "assets": ["libs/branch-finder-schemas/*.md"]
+      }
+    }
+  }
+}

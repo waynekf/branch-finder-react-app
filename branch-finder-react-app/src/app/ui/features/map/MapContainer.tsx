@@ -3,12 +3,11 @@
 import { useRef, useEffect, RefObject } from 'react';
 import { createRoot } from 'react-dom/client';
 import mapboxgl, { MapOptions, PopupOptions } from 'mapbox-gl';
-import { FeatureCollection } from '../../../schema/map/FeatureCollection';
-import { Feature } from '@/app/schema/map';
+import { FeatureCollection, Feature } from 'branch-finder-schemas';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './MapContainer.style.scss';
 import AddressCard from '../address/AddressCard';
-import { getMapPoints } from '@/app/utils/conversions';
+import { getMapPoints } from 'branch-finder-utils';
 
 function MapContainer(props: { mapPoints: FeatureCollection }) {
   const mapRef: RefObject<FeatureCollection> = useRef({} as FeatureCollection);

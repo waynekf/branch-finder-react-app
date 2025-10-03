@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Address } from '@/app/schema/address/Address';
-import { Feature } from '@/app/schema/map';
+import { Address, Feature } from 'branch-finder-schemas';
 import Coordinates from './Coordinates';
 
 type AddressCardProps = {

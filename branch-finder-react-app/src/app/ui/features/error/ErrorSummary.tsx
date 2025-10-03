@@ -1,6 +1,6 @@
 'use client';
 
-import { CustomError } from '../error/CustomError';
+import { CustomError } from "branch-finder-schemas";
 
 function ErrorSummary(props: { customError: CustomError }) {
   if (Object.getOwnPropertyNames(props.customError).length > 0) {

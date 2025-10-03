@@ -1,4 +1,4 @@
-import { Branch } from '../schema/branch';
+import { Branch } from 'branch-finder-schemas';
 
 function getBranches(): Branch[] {
   return [

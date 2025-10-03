@@ -6,4 +6,4 @@ function wait(ms: number): void {
   }
 }
 
-export default wait;
+export { wait };

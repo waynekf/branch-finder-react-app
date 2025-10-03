@@ -1,19 +1,19 @@
 'use client';
 
 import { ChangeEvent, useEffect, useState } from 'react';
-import getPostcode from '@/app/api/mapping-api';
+import getPostcode from '../../../api/mapping-api';
 import logger from '../../../../logger';
-import { CustomError } from '../error/CustomError';
+import { CustomError } from 'branch-finder-schemas';
 import ErrorSummary from '../error/ErrorSummary';
 import MapContainer from '../map/MapContainer';
-import { FeatureCollection } from '../../../schema/map/FeatureCollection';
-import getBranches from '@/app/data/branches';
-import wait from '@/app/utils/wait';
+import { FeatureCollection } from 'branch-finder-schemas';
+import getBranches from 'branch-finder-data';
 import {
   fromBranchToFeature,
   fromPostcodeResponseToFeature,
-} from '@/app/utils/conversions';
-import { getDistance } from '@/app/utils/getDistance';
+  getDistance,
+  wait,
+} from 'branch-finder-utils';
 
 import './Home.style.scss';
 

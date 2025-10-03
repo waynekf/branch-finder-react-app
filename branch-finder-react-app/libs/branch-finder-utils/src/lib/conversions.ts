@@ -1,6 +1,4 @@
-import { Branch } from '../schema/branch';
-import { Feature } from '../schema/map';
-import { PostcodeResponse } from '../schema/postcode';
+import { Branch, Feature, PostcodeResponse } from 'branch-finder-schemas';
 
 const fromBranchToFeature = (branch: Branch): Feature => {
   return {

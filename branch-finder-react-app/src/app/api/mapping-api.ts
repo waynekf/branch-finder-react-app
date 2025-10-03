@@ -1,5 +1,5 @@
-import { PostcodeResponse } from '../schema/postcode/PostcodeResponse';
-import { CustomError } from '../ui/features/error/CustomError';
+import { PostcodeResponse } from 'branch-finder-schemas';
+import { CustomError } from 'branch-finder-schemas';
 
 function getPostcode(postcode: string) {
   const baseUrl = process.env.NEXT_PUBLIC_REACT_APP_POSTCODE_BASE_URL as string;
